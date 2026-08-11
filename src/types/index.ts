@@ -57,6 +57,9 @@ export interface CalendarProject {
   titleTextColor: string;
   presetColors: ColorScheme[];
   showScreenshotMode: boolean;
+  courseNumberWidth: number;
+  courseNumberHeight: number;
+  courseNumberFontSize: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -128,6 +131,9 @@ export const DEFAULT_WEEK_START_NUMBER = 1;
 export const DEFAULT_SHOW_SCREENSHOT_MODE = false;
 export const DEFAULT_TITLE_BG_COLOR = '#ffffff';
 export const DEFAULT_TITLE_TEXT_COLOR = '#000000';
+export const DEFAULT_COURSE_NUMBER_WIDTH = 32;/*圆圈宽度*/
+export const DEFAULT_COURSE_NUMBER_HEIGHT = 32;/*圆圈高度*/
+export const DEFAULT_COURSE_NUMBER_FONT_SIZE = 25;/*圆圈字体大小，圈内字号*/
 export const DEFAULT_COURSE_GROUPS: CourseGroup[] = [
   { id: 'fri', name: '周五班', color: '#10b981', courseDates: [] },
   { id: 'sat', name: '周六班', color: '#3b82f6', courseDates: [] },

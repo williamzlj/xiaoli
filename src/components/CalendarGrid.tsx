@@ -26,6 +26,9 @@ interface CalendarGridProps {
   onUpdateWeekNote: (year: number, month: number, weekNumber: number, note: string) => void;
   onAddWeekNote: (year: number, month: number, weekNumber: number) => void;
   showScreenshotMode?: boolean;
+  courseNumberWidth: number;
+  courseNumberHeight: number;
+  courseNumberFontSize: number;
 }
 
 interface WeekRow {
@@ -63,6 +66,9 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
   onUpdateWeekNote,
   onAddWeekNote,
   showScreenshotMode = false,
+  courseNumberWidth,
+  courseNumberHeight,
+  courseNumberFontSize,
 }) => {
   const weekDaysMonFirst = ['一', '二', '三', '四', '五', '六', '日'];
 
@@ -293,6 +299,9 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
                       extraStyle={{ gridRow: `${gridRow}`, gridColumn: `${gridCol}`, minHeight: `${tableHeight}px` }}
                       monthGroupClass={monthCellClass}
                       showScreenshotMode={showScreenshotMode}
+                      courseNumberWidth={courseNumberWidth}
+                      courseNumberHeight={courseNumberHeight}
+                      courseNumberFontSize={courseNumberFontSize}
                     />
                   );
                 })}

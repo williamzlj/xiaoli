@@ -266,8 +266,6 @@
 
 /* 圆圈数字设置 - 排课圆圈数字的大小和文字 */
 .cell-course-number {
-  width: 32px; /* 圆圈数字设置 */
-  height: 32px; /* 圆圈数字设置 */
   background: #667eea;
   color: white;
   border-radius: 60%;
@@ -275,7 +273,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px; /* 圆圈数字设置 */
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s;
@@ -990,6 +987,25 @@
 }
 
 .course-groups-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.course-settings-two-col {
+  display: flex;
+  gap: 20px;
+}
+
+.course-col-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.course-col-right {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 10px;

@@ -19,6 +19,9 @@ interface CalendarCellProps {
   extraStyle?: React.CSSProperties;
   monthGroupClass?: string;
   showScreenshotMode?: boolean;
+  courseNumberWidth?: number;
+  courseNumberHeight?: number;
+  courseNumberFontSize?: number;
 }
 
 export const CalendarCellComponent: React.FC<CalendarCellProps> = ({
@@ -37,6 +40,9 @@ export const CalendarCellComponent: React.FC<CalendarCellProps> = ({
   extraStyle,
   monthGroupClass,
   showScreenshotMode = false,
+  courseNumberWidth = 32,
+  courseNumberHeight = 32,
+  courseNumberFontSize = 18,
 }) => {
   const [editValue, setEditValue] = useState('');
   const [editField, setEditField] = useState<'note' | null>(null);
@@ -101,7 +107,12 @@ export const CalendarCellComponent: React.FC<CalendarCellProps> = ({
             <div
               key={idx}
               className="cell-course-number"
-              style={{ backgroundColor: getGroupColor(cn.groupId) }}
+              style={{
+                backgroundColor: getGroupColor(cn.groupId),
+                width: `${courseNumberWidth}px`,
+                height: `${courseNumberHeight}px`,
+                fontSize: `${courseNumberFontSize}px`,
+              }}
               title={`${getGroupName(cn.groupId)} - 第${cn.number}次课`}
             >
               {formatCourseNumber(cn.number)}

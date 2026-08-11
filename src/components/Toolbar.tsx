@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { CourseGroup, ColorScheme } from '../types';
-import { PRESET_NOTE_COLORS, DEFAULT_DATE_COLUMN_WIDTH, DEFAULT_TABLE_HEIGHT, DEFAULT_NOTE_COLUMN_WIDTH } from '../types';
+import { PRESET_NOTE_COLORS, DEFAULT_DATE_COLUMN_WIDTH, DEFAULT_TABLE_HEIGHT, DEFAULT_NOTE_COLUMN_WIDTH, DEFAULT_COURSE_NUMBER_WIDTH, DEFAULT_COURSE_NUMBER_HEIGHT, DEFAULT_COURSE_NUMBER_FONT_SIZE } from '../types';
 
 interface ToolbarProps {
   selectedCount: number;
@@ -52,6 +52,12 @@ interface ToolbarProps {
   onPresetColorChange: (name: string, color: string) => void;
   showScreenshotMode: boolean;
   onToggleScreenshotMode: () => void;
+  courseNumberWidth: number;
+  onCourseNumberWidthChange: (w: number) => void;
+  courseNumberHeight: number;
+  onCourseNumberHeightChange: (h: number) => void;
+  courseNumberFontSize: number;
+  onCourseNumberFontSizeChange: (f: number) => void;
 }
 
 type MenuKey = 'file' | 'semester' | 'course' | 'table' | 'title' | 'batch';
@@ -115,6 +121,12 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onPresetColorChange,
   showScreenshotMode,
   onToggleScreenshotMode,
+  courseNumberWidth,
+  onCourseNumberWidthChange,
+  courseNumberHeight,
+  onCourseNumberHeightChange,
+  courseNumberFontSize,
+  onCourseNumberFontSizeChange,
 }) => {
   const [activeMenu, setActiveMenu] = useState<MenuKey>('file');
   const fileInputRef = React.useRef<HTMLInputElement>(null);
@@ -316,28 +328,70 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         return (
           <div className="settings-panel">
             <h3 className="panel-title">排课设置（右键单元格排课）</h3>
-            <div className="course-groups-container">
-              {courseGroups.map((group) => (
-                <div key={group.id} className="course-group-color-row">
-                  <div className="group-name">{group.name}</div>
-                  <div className="group-color-control">
-                    <span className="color-label">圆圈颜色:</span>
-                    <input
-                      type="color"
-                      value={group.color}
-                      onChange={(e) => onCourseGroupColorChange(group.id, e.target.value)}
-                      title="修改圆圈颜色"
-                    />
-                    <span className="color-preview" style={{ backgroundColor: group.color }} />
-                  </div>
+            <div className="course-settings-two-col">
+              <div className="course-col-left">
+                <div className="course-groups-container">
+                  {courseGroups.map((group) => (
+                    <div key={group.id} className="course-group-color-row">
+                      <div className="group-name">{group.name}</div>
+                      <div className="group-color-control">
+                        <span className="color-label">颜色:</span>
+                        <input
+                          type="color"
+                          value={group.color}
+                          onChange={(e) => onCourseGroupColorChange(group.id, e.target.value)}
+                          title="修改圆圈颜色"
+                        />
+                        <span className="color-preview" style={{ backgroundColor: group.color }} />
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            {totalCourseDays > 0 && (
-              <div className="course-stats">
-                已设置 <strong>{totalCourseDays}</strong> 个上课日期
+                {totalCourseDays > 0 && (
+                  <div className="course-stats">
+                    已设置 <strong>{totalCourseDays}</strong> 个上课日期
+                  </div>
+                )}
               </div>
-            )}
+              <div className="course-col-right">
+                <div className="setting-row">
+                  <label>圆圈宽度:</label>
+                  <input
+                    type="range"
+                    min="16"
+                    max="80"
+                    value={courseNumberWidth}
+                    onChange={(e) => onCourseNumberWidthChange(parseInt(e.target.value))}
+                  />
+                  <span className="width-value">{courseNumberWidth}px</span>
+                  <button className="mini-reset-btn" onClick={() => onCourseNumberWidthChange(DEFAULT_COURSE_NUMBER_WIDTH)} title="重置为默认值">↺</button>
+                </div>
+                <div className="setting-row">
+                  <label>圆圈高度:</label>
+                  <input
+                    type="range"
+                    min="16"
+                    max="80"
+                    value={courseNumberHeight}
+                    onChange={(e) => onCourseNumberHeightChange(parseInt(e.target.value))}
+                  />
+                  <span className="width-value">{courseNumberHeight}px</span>
+                  <button className="mini-reset-btn" onClick={() => onCourseNumberHeightChange(DEFAULT_COURSE_NUMBER_HEIGHT)} title="重置为默认值">↺</button>
+                </div>
+                <div className="setting-row">
+                  <label>圆内字号:</label>
+                  <input
+                    type="range"
+                    min="8"
+                    max="48"
+                    value={courseNumberFontSize}
+                    onChange={(e) => onCourseNumberFontSizeChange(parseInt(e.target.value))}
+                  />
+                  <span className="width-value">{courseNumberFontSize}px</span>
+                  <button className="mini-reset-btn" onClick={() => onCourseNumberFontSizeChange(DEFAULT_COURSE_NUMBER_FONT_SIZE)} title="重置为默认值">↺</button>
+                </div>
+              </div>
+            </div>
           </div>
         );
 

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { CalendarProject, CalendarCell, MonthConfig, WeekNote } from './types';
-import { generateCellKey, DEFAULT_DATE_COLUMN_WIDTH, DEFAULT_TABLE_HEIGHT, DEFAULT_NOTE_COLUMN_WIDTH, DEFAULT_NOTE_COLOR, DEFAULT_WEEK_NOTE_COLOR, DEFAULT_NOTE_FONT_SIZE, DEFAULT_DATE_FONT_SIZE, DEFAULT_TITLE_FONT_SIZE, DEFAULT_SUBTITLE_FONT_SIZE, DEFAULT_PRESET_COLORS, DEFAULT_WEEK_START_NUMBER, DEFAULT_TITLE_BG_COLOR, DEFAULT_TITLE_TEXT_COLOR, DEFAULT_COURSE_GROUPS, DEFAULT_SHOW_SCREENSHOT_MODE } from './types';
+import { generateCellKey, DEFAULT_DATE_COLUMN_WIDTH, DEFAULT_TABLE_HEIGHT, DEFAULT_NOTE_COLUMN_WIDTH, DEFAULT_NOTE_COLOR, DEFAULT_WEEK_NOTE_COLOR, DEFAULT_NOTE_FONT_SIZE, DEFAULT_DATE_FONT_SIZE, DEFAULT_TITLE_FONT_SIZE, DEFAULT_SUBTITLE_FONT_SIZE, DEFAULT_PRESET_COLORS, DEFAULT_WEEK_START_NUMBER, DEFAULT_TITLE_BG_COLOR, DEFAULT_TITLE_TEXT_COLOR, DEFAULT_COURSE_GROUPS, DEFAULT_SHOW_SCREENSHOT_MODE, DEFAULT_COURSE_NUMBER_WIDTH, DEFAULT_COURSE_NUMBER_HEIGHT, DEFAULT_COURSE_NUMBER_FONT_SIZE } from './types';
 import { generateMonthCells, generateMonthsRange } from './utils/dateUtils';
 import { exportToPNG, exportToPDF } from './utils/exportUtils';
 import { useCellSelection } from './hooks/useCellSelection';
@@ -58,6 +58,9 @@ function createDefaultProject(startYear: number, startMonth: number, startDay: n
     titleBgColor: DEFAULT_TITLE_BG_COLOR,
     titleTextColor: DEFAULT_TITLE_TEXT_COLOR,
     showScreenshotMode: DEFAULT_SHOW_SCREENSHOT_MODE,
+    courseNumberWidth: DEFAULT_COURSE_NUMBER_WIDTH,
+    courseNumberHeight: DEFAULT_COURSE_NUMBER_HEIGHT,
+    courseNumberFontSize: DEFAULT_COURSE_NUMBER_FONT_SIZE,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
@@ -95,12 +98,17 @@ function loadSavedProject(): CalendarProject | null {
           const daysInMonth = new Date(project.semesterEnd.year, project.semesterEnd.month, 0).getDate();
           project.semesterEnd.day = daysInMonth;
         }
-        if (project.tableWidth !== undefined && project.tableWidth <= 100) {
-          project.dateColumnWidth = project.tableWidth;
-          delete project.tableWidth;
-        }
         if (project.dateColumnWidth === undefined) {
           project.dateColumnWidth = DEFAULT_DATE_COLUMN_WIDTH;
+        }
+        if (project.courseNumberWidth === undefined) {
+          project.courseNumberWidth = DEFAULT_COURSE_NUMBER_WIDTH;
+        }
+        if (project.courseNumberHeight === undefined) {
+          project.courseNumberHeight = DEFAULT_COURSE_NUMBER_HEIGHT;
+        }
+        if (project.courseNumberFontSize === undefined) {
+          project.courseNumberFontSize = DEFAULT_COURSE_NUMBER_FONT_SIZE;
         }
         return project;
       }
@@ -446,10 +454,13 @@ function App() {
       titleBgColor: project.titleBgColor,
       titleTextColor: project.titleTextColor,
       courseGroups: project.courseGroups,
+      courseNumberWidth: project.courseNumberWidth,
+      courseNumberHeight: project.courseNumberHeight,
+      courseNumberFontSize: project.courseNumberFontSize,
     });
     clearSelection();
     showToast('学期范围已更新');
-  }, [project.sideNotes, project.footerNotes, project.teacherName, project.contact, project.dateColumnWidth, project.tableHeight, project.noteColor, project.weekNoteColor, project.noteFontSize, project.dateFontSize, project.titleFontSize, project.subtitleFontSize, project.weekStartNumber, project.titleBgColor, project.titleTextColor, project.courseGroups, clearSelection, showToast]);
+  }, [project.sideNotes, project.footerNotes, project.teacherName, project.contact, project.dateColumnWidth, project.tableHeight, project.noteColor, project.weekNoteColor, project.noteFontSize, project.dateFontSize, project.titleFontSize, project.subtitleFontSize, project.weekStartNumber, project.titleBgColor, project.titleTextColor, project.courseGroups, project.courseNumberWidth, project.courseNumberHeight, project.courseNumberFontSize, clearSelection, showToast]);
 
   const handleSave = useCallback(() => {
     saveProject(project);
@@ -491,12 +502,17 @@ function App() {
           if (importedConfig.showScreenshotMode === undefined) {
             importedConfig.showScreenshotMode = DEFAULT_SHOW_SCREENSHOT_MODE;
           }
-          if (importedConfig.tableWidth !== undefined && importedConfig.tableWidth <= 100) {
-            importedConfig.dateColumnWidth = importedConfig.tableWidth;
-            delete importedConfig.tableWidth;
-          }
           if (importedConfig.dateColumnWidth === undefined) {
             importedConfig.dateColumnWidth = DEFAULT_DATE_COLUMN_WIDTH;
+          }
+          if (importedConfig.courseNumberWidth === undefined) {
+            importedConfig.courseNumberWidth = DEFAULT_COURSE_NUMBER_WIDTH;
+          }
+          if (importedConfig.courseNumberHeight === undefined) {
+            importedConfig.courseNumberHeight = DEFAULT_COURSE_NUMBER_HEIGHT;
+          }
+          if (importedConfig.courseNumberFontSize === undefined) {
+            importedConfig.courseNumberFontSize = DEFAULT_COURSE_NUMBER_FONT_SIZE;
           }
           setProject(importedConfig);
           clearSelection();
@@ -699,6 +715,12 @@ function App() {
         onPresetColorChange={handlePresetColorChange}
         showScreenshotMode={project.showScreenshotMode}
         onToggleScreenshotMode={() => handleProjectUpdate({ showScreenshotMode: !project.showScreenshotMode })}
+        courseNumberWidth={project.courseNumberWidth}
+        onCourseNumberWidthChange={(w) => setProject(prev => ({ ...prev, courseNumberWidth: w }))}
+        courseNumberHeight={project.courseNumberHeight}
+        onCourseNumberHeightChange={(h) => setProject(prev => ({ ...prev, courseNumberHeight: h }))}
+        courseNumberFontSize={project.courseNumberFontSize}
+        onCourseNumberFontSizeChange={(f) => setProject(prev => ({ ...prev, courseNumberFontSize: f }))}
       />
       </div>
 
@@ -728,6 +750,9 @@ function App() {
               onUpdateWeekNote={handleWeekNoteUpdate}
               onAddWeekNote={handleAddWeekNote}
               showScreenshotMode={project.showScreenshotMode}
+              courseNumberWidth={project.courseNumberWidth}
+              courseNumberHeight={project.courseNumberHeight}
+              courseNumberFontSize={project.courseNumberFontSize}
             />
           </div>
         </div>
