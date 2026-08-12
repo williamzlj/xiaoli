@@ -98,7 +98,7 @@ export const CalendarCellComponent: React.FC<CalendarCellProps> = ({
       onContextMenu={handleContextMenu}
     >
       <div className="cell-content">
-        <div className="cell-date" style={{ fontSize: `${dateFontSize}px`, textAlign: 'center', fontWeight: 'bold' }}>
+        <div className="cell-date" style={{ fontSize: `${cell.customDateFontSize ?? dateFontSize}px`, textAlign: 'center', fontWeight: 'bold' }}>
           {cell.isMonthStart ? `${cell.month}月${cell.dayOfMonth}日` : cell.dayOfMonth}
         </div>
 

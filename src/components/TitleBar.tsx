@@ -52,8 +52,8 @@ export const TitleBar: React.FC<TitleBarProps> = ({ project, onUpdate }) => {
           {project.subtitle && <span className="subtitle" style={{ color: project.titleTextColor, fontSize: `${project.subtitleFontSize}px` }}>{project.subtitle}</span>}
         </div>
         <div className="title-info">
-          <span className="teacher-name">{project.teacherName}</span>
-          <span className="contact">{project.contact}</span>
+          <span className="teacher-name" style={{ color: '#827f7f' }}>{project.teacherName}</span>
+          <span className="contact" style={{ color: '#827f7f' }}>{project.contact}</span>
         </div>
         <div className="edit-hint" style={{ backgroundColor: project.titleTextColor, color: project.titleBgColor }}>✎ 点击编辑</div>
       </div>

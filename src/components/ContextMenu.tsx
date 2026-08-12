@@ -8,6 +8,8 @@ interface ContextMenuProps {
   onAddToCourse: (groupId: string) => void;
   onRemoveCourse: () => void;
   onToggleMonthStart: () => void;
+  onSetDateFontSize: () => void;
+  onClearDateFontSize: () => void;
   onClose: () => void;
 }
 
@@ -19,6 +21,8 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
   onAddToCourse,
   onRemoveCourse,
   onToggleMonthStart,
+  onSetDateFontSize,
+  onClearDateFontSize,
   onClose,
 }) => {
   const menuRef = useRef<HTMLDivElement>(null);
@@ -78,6 +82,19 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
         onClick={() => { onToggleMonthStart(); onClose(); }}
       >
         切换月首
+      </button>
+      <div className="context-menu-divider" />
+      <button
+        className="context-menu-item"
+        onClick={() => { onSetDateFontSize(); onClose(); }}
+      >
+        设置日期字号...
+      </button>
+      <button
+        className="context-menu-item"
+        onClick={() => { onClearDateFontSize(); onClose(); }}
+      >
+        清除日期字号
       </button>
     </div>
   );

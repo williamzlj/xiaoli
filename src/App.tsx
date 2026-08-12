@@ -403,6 +403,50 @@ function App() {
     showToast(`已切换 ${selection.cellKeys.length} 个单元格的月首标记`);
   }, [selection.cellKeys, showToast]);
 
+  const handleSetDateFontSize = useCallback(() => {
+    if (selection.cellKeys.length === 0) return;
+    const input = window.prompt('请输入日期字号（8-72，留空取消）', '');
+    if (input === null) return;
+    const size = parseInt(input, 10);
+    if (isNaN(size) || size < 8 || size > 72) {
+      showToast('字号必须在 8-72 之间');
+      return;
+    }
+    setProject((prev) => {
+      const newMonths = prev.months.map((m) => ({
+        ...m,
+        cells: m.cells.map((c) => {
+          const key = generateCellKey(c.year, c.month, c.dayOfMonth);
+          if (selection.cellKeys.includes(key)) {
+            return { ...c, customDateFontSize: size };
+          }
+          return c;
+        }),
+      }));
+      return { ...prev, months: newMonths };
+    });
+    showToast(`已设置 ${selection.cellKeys.length} 个单元格的日期字号为 ${size}px`);
+  }, [selection.cellKeys, showToast]);
+
+  const handleClearDateFontSize = useCallback(() => {
+    if (selection.cellKeys.length === 0) return;
+    setProject((prev) => {
+      const newMonths = prev.months.map((m) => ({
+        ...m,
+        cells: m.cells.map((c) => {
+          const key = generateCellKey(c.year, c.month, c.dayOfMonth);
+          if (selection.cellKeys.includes(key)) {
+            const { customDateFontSize, ...rest } = c;
+            return rest;
+          }
+          return c;
+        }),
+      }));
+      return { ...prev, months: newMonths };
+    });
+    showToast(`已清除 ${selection.cellKeys.length} 个单元格的日期字号设置`);
+  }, [selection.cellKeys, showToast]);
+
   const handleCourseGroupColorChange = useCallback((groupId: string, color: string) => {
     setProject((prev) => {
       const newCourseGroups = prev.courseGroups.map((g) => {
@@ -754,15 +798,14 @@ function App() {
               courseNumberHeight={project.courseNumberHeight}
               courseNumberFontSize={project.courseNumberFontSize}
             />
+            <div ref={footerRef}>
+              <FooterNotes
+                project={project}
+                onUpdateNotes={(notes) => handleProjectUpdate({ footerNotes: notes })}
+                showScreenshotMode={project.showScreenshotMode}
+              />
+            </div>
           </div>
-        </div>
-
-        <div ref={footerRef}>
-          <FooterNotes
-            project={project}
-            onUpdateNotes={(notes) => handleProjectUpdate({ footerNotes: notes })}
-            showScreenshotMode={project.showScreenshotMode}
-          />
         </div>
       </div>
 
@@ -776,6 +819,8 @@ function App() {
             onAddToCourse={handleAddToCourse}
             onRemoveCourse={handleRemoveCourse}
             onToggleMonthStart={handleToggleMonthStart}
+            onSetDateFontSize={handleSetDateFontSize}
+            onClearDateFontSize={handleClearDateFontSize}
             onClose={handleContextMenuClose}
           />
         </div>

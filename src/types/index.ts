@@ -16,6 +16,7 @@ export interface CalendarCell {
   courseNumbers: { groupId: string; number: number }[];
   isCourseDay: boolean;
   isMonthStart?: boolean;
+  customDateFontSize?: number;
 }
 
 export interface WeekNote {
@@ -118,8 +119,8 @@ export const PRESET_NOTE_COLORS: ColorScheme[] = [
   { name: '黑色', colors: ['#000000'] },
 ];
 
-export const DEFAULT_DATE_COLUMN_WIDTH = 127;/*日期列默认宽度,日期列宽*/
-export const DEFAULT_TABLE_HEIGHT = 79;/*表格高度*/
+export const DEFAULT_DATE_COLUMN_WIDTH = 120;/*日期列默认宽度,日期列宽*/
+export const DEFAULT_TABLE_HEIGHT = 80;/*表格高度*/
 export const DEFAULT_NOTE_COLUMN_WIDTH = 250;/*备注列宽*/
 export const DEFAULT_NOTE_COLOR = '#dc2626';
 export const DEFAULT_WEEK_NOTE_COLOR = '#000000';
